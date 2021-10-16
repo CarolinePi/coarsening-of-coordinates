@@ -1,2 +1,16 @@
 app:
-  secret_table: 1, 2, 3
+  secret_table: [1, 2, 3]
+  host: 0.0.0.0
+  port: 8080
+  domain: https://0.0.0.0:8080
+  secret_key: coordinate_secret
+
+db:
+  host: 10.254.0.1
+  port: 5432
+  db: main
+  user: project_admin
+  timeout: 10
+  min_pool_size: 1
+  max_pool_size: 10
+  password: password
