@@ -37,7 +37,7 @@ class AppConfig:
     port: str
     domain: str
     secret_table: List[int]
-    secret_key: str
+    secret_key: bytes
 
     def __init__(self, **kwargs):
         names = set([f.name for f in dataclasses.fields(self)])

@@ -16,6 +16,7 @@ class User:
     full_name: str
     user_id: str
     location: Location
+    is_admin: bool
 
     def do_split_full_name(self) -> List[str]:
         return self.full_name.split()

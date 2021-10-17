@@ -3,7 +3,7 @@ from decimal import Decimal
 from circle import Circle
 from enums import Sign, Axis
 from hash_function import HashFunction
-from models import User, Location
+from model import User, Location
 from random import shuffle
 
 if __name__ == '__main__':
