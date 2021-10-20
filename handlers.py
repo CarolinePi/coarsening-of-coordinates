@@ -1,6 +1,3 @@
-import json
-from decimal import Decimal
-
 from aiohttp import web
 from aiohttp_session import get_session, new_session
 from dataclasses import asdict
@@ -34,7 +31,6 @@ async def get_user(request: web.Request) -> web.Response:
     )
     user_calculate = mapping_user_model_to_user_calculate(searched_user)
     if not is_admin or user_id != searched_user_id:
-        user_calculate = mapping_user_model_to_user_calculate(searched_user)
         location = get_user_location(
             request.app['secret_table'], user_calculate
         )

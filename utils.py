@@ -1,5 +1,5 @@
 from decimal import Decimal
-from typing import List
+from typing import List, Tuple, Any
 
 from circle import Circle
 from enums import Axis, Sign
@@ -44,7 +44,7 @@ def _get_value(
 
 
 class DecimalSerializationDict(dict):
-    def __init__(self, data):
+    def __init__(self, data: List[Tuple[str, Any]]):
         super().__init__(
             (k, str(v)) if isinstance(v, Decimal) else (k, v)
             for (k, v) in data
