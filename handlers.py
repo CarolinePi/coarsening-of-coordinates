@@ -1,10 +1,19 @@
+import json
+from decimal import Decimal
+
 from aiohttp import web
 from aiohttp_session import get_session, new_session
+from dataclasses import asdict
 
-from auth import hash_password, get_user_in_session, verify_password
-from model import User
-from models.location import LocationModel
-from models.user import UserModel
+from auth import (
+    hash_password,
+    verify_password,
+    get_user_in_session
+)
+from mapping import mapping_user_model_to_user_calculate
+from models_db.location import LocationModel
+from models_db.user import UserModel
+from utils import get_user_location, DecimalSerializationDict
 
 routes = web.RouteTableDef()
 
@@ -14,17 +23,31 @@ async def healthcheck(request: web.Request) -> web.Response:
     return web.HTTPOk(text='I am fine!')
 
 
-@routes.get('/user')
-async def example(request: web.Request) -> web.Response:
-    print(request.app['secret_table'])
-    print(request.cookies)
-    return web.HTTPOk(text='I am fine!')
+@routes.get('/user/{id:\d+}')
+async def get_user(request: web.Request) -> web.Response:
+    user = await get_user_in_session(request)
+    user_id = user.id if user is not None else None
+    is_admin = user.is_admin if user is not None else False
+    searched_user_id = request.match_info['id']
+    searched_user = await request.app['repository'].select_user_by_id(
+        searched_user_id
+    )
+    user_calculate = mapping_user_model_to_user_calculate(searched_user)
+    if not is_admin or user_id != searched_user_id:
+        user_calculate = mapping_user_model_to_user_calculate(searched_user)
+        location = get_user_location(
+            request.app['secret_table'], user_calculate
+        )
+        user_calculate.location = location
+
+    data = asdict(user_calculate, dict_factory=DecimalSerializationDict)
+    return web.json_response(data, status=200)
 
 
 @routes.post('/register')
 async def register(request: web.Request) -> web.Response:
-    user_id = await get_user_in_session(request)
-    if user_id:
+    user = await get_user_in_session(request)
+    if user:
         return web.HTTPForbidden(text='You already registered')
 
     data = await request.json()
@@ -47,18 +70,17 @@ async def register(request: web.Request) -> web.Response:
 
 @routes.post('/login')
 async def login(request: web.Request) -> web.Response:
-    user_id = await get_user_in_session(request)
-    if user_id:
+    user = await get_user_in_session(request)
+    if user:
         return web.HTTPForbidden(text='You already signed in')
 
     data = await request.json()
-    real_password = await request.app['repository'].select_user_password(
+    result = await request.app['repository'].select_user_login_data(
         data['full_name']
     )
-
-    if verify_password(real_password, data['password']):
+    if verify_password(result.user_password_hash, data['password']):
         session = await new_session(request)
-        session['user_id'] = str(user_id)
+        session['user_id'] = str(result.user_id)
         return web.HTTPOk(text='You login')
     else:
         return web.HTTPUnauthorized(text='Password or login is invalid')

@@ -1,22 +1,41 @@
 import hashlib
 import os
-from typing import Optional
+from functools import wraps
+from typing import Optional, Callable
 
 from aiohttp import web
 from aiohttp_session import get_session
 
-
-def login_required():
-    pass
+from models_db.user import UserModel
 
 
-def admin_required():
-    pass
+def login_required(handler: Callable) -> Callable:
+    @wraps(handler)
+    async def wrapper(request: web.Request) -> web.Response:
+        user_id = await get_user_id_in_session(request)
+        if not user_id:
+            web.HTTPUnauthorized(text='You must be signed up')
+        request['user'] = await (
+            request.app['repository'].select_from_model_by_ids([user_id])
+        )
+        return await handler(request)
+    return wrapper
 
 
-async def get_user_in_session(request: web.Request) -> Optional[int]:
+async def get_user_id_in_session(request: web.Request) -> Optional[int]:
     session = await get_session(request)
     return session.get('user_id')
+
+
+async def get_user_in_session(request: web.Request) -> Optional[UserModel]:
+    user_id = await get_user_id_in_session(request)
+    print(user_id)
+    if not user_id:
+        return None
+    user = await request.app['repository'].select_from_model_by_ids(
+        UserModel, [user_id]
+    )
+    return user[0] if user else None
 
 
 def hash_password(password: str) -> str:

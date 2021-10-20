@@ -1,15 +1,27 @@
-from sqlalchemy import Column, Integer, String, Boolean, ForeignKey
-from sqlalchemy.orm import relationship
+from dataclasses import dataclass
+from typing import List
 
-from models.base_model import BaseModel
-from models.location import LocationModel
+from enums import Sign, Axis
+from models.location import Location
 
 
-class UserModel(BaseModel):
-    __tablename__ = 'user'
+@dataclass
+class User:
+    id: int
+    full_name: str
+    location: Location
 
-    full_name = Column(String(30), nullable=False)
-    password_hash = Column(String(255), nullable=False, unique=True)
-    is_admin = Column(Boolean(25), nullable=False)
-    location_id = Column(Integer, ForeignKey(LocationModel.id))
-    location = relationship(LocationModel)
+    def do_split_full_name(self) -> List[str]:
+        return self.full_name.split()
+
+    def choose_sign(self) -> Sign:
+        surname = self.do_split_full_name()[0]
+        if len(surname) % 2 == 0:
+            return Sign.POSITIVE
+        return Sign.NEGATIVE
+
+    def choose_coordinate_axis_for_start(self) -> Axis:
+        name = self.do_split_full_name()[0]
+        if len(name) % 2 == 0:
+            return Axis.X
+        return Axis.Y

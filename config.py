@@ -12,6 +12,7 @@ APP_TRAFARET = t.Dict({
     'domain': t.String(),
     'secret_key': t.String(),
     'secret_table': t.List(t.Int),
+    'n': t.Float(),
 })
 
 DB_TRAFARET = t.Dict({
@@ -38,6 +39,7 @@ class AppConfig:
     domain: str
     secret_table: List[int]
     secret_key: bytes
+    n: float
 
     def __init__(self, **kwargs):
         names = set([f.name for f in dataclasses.fields(self)])

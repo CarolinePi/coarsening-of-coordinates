@@ -1,12 +1,8 @@
-from sqlalchemy import Column, DECIMAL
+from dataclasses import dataclass
+from decimal import Decimal
 
-from models.base_model import BaseModel
 
-
-class LocationModel(BaseModel):
-    __tablename__ = 'location'
-
-    # TODO: Validate lat and lon by degrees
-    latitude = Column(DECIMAL, nullable=False)
-    longitude = Column(DECIMAL, nullable=False)
-
+@dataclass
+class Location:
+    latitude: Decimal  # X
+    longitude: Decimal  # y

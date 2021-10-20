@@ -2,12 +2,13 @@ from typing import Any, List, Dict
 
 from aiopg.sa import create_engine
 from aiopg.sa.result import RowProxy
-from sqlalchemy import select
+from sqlalchemy import select, join
 from sqlalchemy.sql import Selectable
 
 from config import DatabaseConfig
-from models.base_model import BaseModel
-from models.user import UserModel
+from models_db.base_model import BaseModel
+from models_db.location import LocationModel
+from models_db.user import UserModel
 
 
 class Repository:
@@ -31,11 +32,11 @@ class Repository:
             resp: List[RowProxy] = await cursor.fetchall()
             return resp
 
-    # async def _first(self, query: Selectable) -> RowProxy:
-    #     async with self._engine.acquire() as connection:
-    #         cursor = await connection.execute(query)
-    #         resp: RowProxy = await cursor.first()
-    #         return resp
+    async def _first(self, query: Selectable) -> RowProxy:
+        async with self._engine.acquire() as connection:
+            cursor = await connection.execute(query)
+            resp: RowProxy = await cursor.first()
+            return resp
 
     async def _scalar(self, query: Selectable) -> Any:
         async with self._engine.acquire() as connection:
@@ -55,11 +56,21 @@ class Repository:
         self, model: BaseModel, ids: List[int]
     ) -> List[RowProxy]:
         return await self._fetchall(
-            select([model]).where(model.id.in_(ids))
+            select(model).where(model.id.in_(ids))
         )
 
-    async def select_user_password(self, full_name: str) -> str:
-        return await self._scalar(
-            select([UserModel.password_hash])
-            .where(UserModel.full_name == full_name)
+    async def select_user_by_id(self, id: int) -> RowProxy:
+        return await self._first(
+            select(
+                UserModel.id, UserModel.full_name,
+                LocationModel.longitude, LocationModel.latitude
+            )
+            .select_from(join(UserModel, LocationModel))
+            .where(UserModel.id == id)
+        )
+
+    async def select_user_login_data(self, full_name: str) -> RowProxy:
+        return await self._first(
+            select(UserModel.id, UserModel.password_hash)
+            .where(UserModel.full_name == full_name).apply_labels()
         )
