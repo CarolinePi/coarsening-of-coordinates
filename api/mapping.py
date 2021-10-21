@@ -1,7 +1,7 @@
 from aiopg.sa.result import RowProxy
 
-from models.location import Location
-from models.user import User
+from bl.models.location import Location
+from bl.models.user import User
 
 
 def mapping_user_model_to_user_calculate(row: RowProxy) -> User:

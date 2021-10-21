@@ -1,11 +1,11 @@
 from decimal import Decimal
 from typing import List, Tuple, Any
 
-from circle import Circle
-from enums import Axis, Sign
-from hash_function import HashFunction
-from models.location import Location
-from models.user import User
+from bl.circle import Circle
+from bl.enums import Axis, Sign
+from bl.hash_function import HashFunction
+from bl.models.location import Location
+from bl.models.user import User
 
 
 def get_user_location(secret_table: List[int], user: User):

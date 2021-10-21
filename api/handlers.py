@@ -2,15 +2,15 @@ from aiohttp import web
 from aiohttp_session import get_session, new_session
 from dataclasses import asdict
 
-from auth import (
+from api.auth import (
     hash_password,
     verify_password,
     get_user_in_session
 )
-from mapping import mapping_user_model_to_user_calculate
-from models_db.location import LocationModel
-from models_db.user import UserModel
-from utils import get_user_location, DecimalSerializationDict
+from api.mapping import mapping_user_model_to_user_calculate
+from dl.models.location import LocationModel
+from dl.models.user import UserModel
+from bl.utils import get_user_location, DecimalSerializationDict
 
 routes = web.RouteTableDef()
 

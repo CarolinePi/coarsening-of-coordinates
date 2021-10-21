@@ -5,8 +5,8 @@ from aiohttp_session import session_middleware
 from aiohttp_session.cookie_storage import EncryptedCookieStorage
 
 from config import Config, DatabaseConfig
-from handlers import routes
-from repository import Repository
+from api.handlers import routes
+from dl.repository import Repository
 
 
 def cleanup_database(
@@ -23,7 +23,9 @@ def get_app(config: Config):
     app = web.Application(
         middlewares=[
             normalize_path_middleware(),
-            session_middleware(EncryptedCookieStorage(b'Thirty  two  length  bytes  key.'))
+            session_middleware(EncryptedCookieStorage(
+                b'Thirty  two  length  bytes  key.')
+            )
         ],
 
     )

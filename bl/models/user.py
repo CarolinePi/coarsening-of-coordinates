@@ -1,8 +1,8 @@
 from dataclasses import dataclass
 from typing import List
 
-from enums import Sign, Axis
-from models.location import Location
+from bl.enums import Sign, Axis
+from bl.models.location import Location
 
 
 @dataclass

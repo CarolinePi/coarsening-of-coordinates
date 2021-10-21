@@ -1,12 +1,13 @@
 import hashlib
 import os
-from functools import wraps
-from typing import Optional, Callable
 
 from aiohttp import web
 from aiohttp_session import get_session
+from functools import wraps
+from typing import Optional, Callable
 
-from models_db.user import UserModel
+
+from dl.models.user import UserModel
 
 
 def login_required(handler: Callable) -> Callable:

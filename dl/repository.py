@@ -6,9 +6,9 @@ from sqlalchemy import select, join
 from sqlalchemy.sql import Selectable
 
 from config import DatabaseConfig
-from models_db.base_model import BaseModel
-from models_db.location import LocationModel
-from models_db.user import UserModel
+from dl.models.base_model import BaseModel
+from dl.models.location import LocationModel
+from dl.models.user import UserModel
 
 
 class Repository:

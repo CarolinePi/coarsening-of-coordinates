@@ -1,8 +1,8 @@
 from sqlalchemy import Column, Integer, String, Boolean, ForeignKey
 from sqlalchemy.orm import relationship
 
-from models_db.base_model import BaseModel
-from models_db.location import LocationModel
+from dl.models.base_model import BaseModel
+from dl.models.location import LocationModel
 
 
 class UserModel(BaseModel):

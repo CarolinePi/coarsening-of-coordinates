@@ -1,6 +1,6 @@
 from sqlalchemy import Column, DECIMAL
 
-from models_db.base_model import BaseModel
+from dl.models.base_model import BaseModel
 
 
 class LocationModel(BaseModel):
