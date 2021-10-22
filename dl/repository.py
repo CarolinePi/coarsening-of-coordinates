@@ -1,4 +1,4 @@
-from typing import Any, List, Dict
+from typing import Any, List, Dict, Type
 
 from aiopg.sa import create_engine
 from aiopg.sa.result import RowProxy
@@ -43,8 +43,9 @@ class Repository:
             return await connection.scalar(query)
 
     async def insert_row_to_model(
-        self, model: BaseModel, **kwargs: Dict[str, Any]
+        self, model: Type[BaseModel], **kwargs: Dict[str, Any]
     ) -> int:
+        await model.check_types(data=kwargs)
         return await self._scalar(
             model.__table__
             .insert()
@@ -53,13 +54,13 @@ class Repository:
         )
 
     async def select_from_model_by_ids(
-        self, model: BaseModel, ids: List[int]
+        self, model: Type[BaseModel], ids: List[int]
     ) -> List[RowProxy]:
         return await self._fetchall(
             select(model).where(model.id.in_(ids))
         )
 
-    async def select_user_by_id(self, id: int) -> RowProxy:
+    async def select_user_full_info_by_id(self, id: int) -> RowProxy:
         return await self._first(
             select(
                 UserModel.id, UserModel.full_name,

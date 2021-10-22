@@ -26,9 +26,8 @@ async def get_user(request: web.Request) -> web.Response:
     user_id = user.id if user is not None else None
     is_admin = user.is_admin if user is not None else False
     searched_user_id = int(request.match_info['id'])
-    searched_user = await request.app['repository'].select_user_by_id(
-        searched_user_id
-    )
+    searched_user = await request.app['repository'].select_user_full_info_by_id(
+        searched_user_id)
     user_calculate = mapping_user_model_to_user_calculate(searched_user)
 
     if not (is_admin or user_id == searched_user_id):
@@ -52,7 +51,7 @@ async def register(request: web.Request) -> web.Response:
     location_id = await request.app['repository'].insert_row_to_model(
         model=LocationModel, **data['location']
     )
-
+    # TODO: do transaction insert location and user
     user_id = await request.app['repository'].insert_row_to_model(
         model=UserModel,
         full_name=data['full_name'],

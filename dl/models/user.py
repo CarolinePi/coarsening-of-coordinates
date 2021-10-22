@@ -10,6 +10,6 @@ class UserModel(BaseModel):
 
     full_name = Column(String(30), nullable=False)
     password_hash = Column(String(255), nullable=False, unique=True)
-    is_admin = Column(Boolean(25), nullable=False)
+    is_admin = Column(Boolean(25), nullable=False, default=False)
     location_id = Column(Integer, ForeignKey(LocationModel.id))
     location = relationship(LocationModel)
