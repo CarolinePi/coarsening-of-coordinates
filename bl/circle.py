@@ -32,3 +32,7 @@ class Circle:
                 (self.n * self.n - (self.x - self.x0) ** 2).sqrt() + self.y0
             ).quantize(Decimal('0.00001'))
         return self._y
+
+    def __repr__(self):
+        return f'class <{self.__class__.__name__}> ' \
+               f'n = {self.n}, x0 = {self.x0}, y0 = {self.y0}'

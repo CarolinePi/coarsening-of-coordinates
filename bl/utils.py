@@ -11,9 +11,12 @@ from bl.models.user import User
 def get_user_location(secret_table: List[int], user: User):
     hash_function = HashFunction(secret_table)
     hash_for_first_axis = hash_function.create_hash(user.full_name)
+    print(hash_for_first_axis)
     first_axis = Decimal(hash_for_first_axis / 10000).quantize(Decimal('0.00001'))
 
     axis = user.choose_coordinate_axis_for_start()
+    print(axis)
+    print(user.choose_sign())
     if axis == Axis.X:
         value = _get_value(
             first_axis, user.choose_sign(), user.location.latitude
@@ -25,7 +28,7 @@ def get_user_location(secret_table: List[int], user: User):
 
     addition_param = {axis.value: value.quantize(Decimal('0.00001'))}
     circle = Circle(
-        n=Decimal(0.018),   # TODO: go to config
+        n=Decimal(hash_for_first_axis / 10000).quantize(Decimal('0.001')),
         x0=user.location.latitude,
         y0=user.location.longitude,
         **addition_param
