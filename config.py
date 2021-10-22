@@ -1,5 +1,6 @@
 import dataclasses
 from os import getenv
+from pathlib import Path
 from typing import List
 
 import trafaret as t
@@ -83,7 +84,7 @@ def parse_config(file_path: str) -> Config:
 
 def get_config() -> Config:
     # TODO: config_path = os.environ.get('CONFIG_PATH')
-    config_path = 'config.yaml'
+    config_path = f'{Path(__file__).parent}/config.yaml'
     return parse_config(config_path)
 
 
@@ -92,7 +93,3 @@ def _get_env(key: str) -> str:
     if env:
         return env
     raise RuntimeError(f'Variable \'{key}\' not set')
-
-
-
-

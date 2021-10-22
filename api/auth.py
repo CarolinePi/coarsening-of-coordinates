@@ -30,7 +30,6 @@ async def get_user_id_in_session(request: web.Request) -> Optional[int]:
 
 async def get_user_in_session(request: web.Request) -> Optional[UserModel]:
     user_id = await get_user_id_in_session(request)
-    print(user_id)
     if not user_id:
         return None
     user = await request.app['repository'].select_from_model_by_ids(
