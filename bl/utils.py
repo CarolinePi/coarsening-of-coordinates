@@ -11,7 +11,8 @@ from bl.models.user import User
 def get_user_location(secret_table: List[int], user: User) -> Location:
     hash_function = HashFunction(secret_table)
     hash_for_first_axis = hash_function.create_hash(user.full_name)
-    first_axis = Decimal(hash_for_first_axis / 10000).quantize(Decimal('0.00001'))
+    first_axis = Decimal(hash_for_first_axis / 10000)\
+        .quantize(Decimal('0.00001'))
 
     axis = user.choose_coordinate_axis_for_start()
     if axis == Axis.X:

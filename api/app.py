@@ -1,4 +1,4 @@
-from typing import Callable, AsyncGenerator, Iterator
+from typing import Callable, AsyncGenerator
 from aiohttp import web
 from aiohttp.web_middlewares import normalize_path_middleware
 from aiohttp_session import session_middleware

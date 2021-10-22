@@ -13,4 +13,3 @@ def mapping_user_model_to_user_calculate(row: RowProxy) -> User:
             latitude=row.latitude,
         )
     )
-

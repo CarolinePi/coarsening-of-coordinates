@@ -20,7 +20,7 @@ async def healthcheck(request: web.Request) -> web.Response:
     return web.HTTPOk(text='I am fine!')
 
 
-@routes.get('/user/{id:\d+}')
+@routes.get('/user/{id}')
 async def get_user(request: web.Request) -> web.Response:
     user = await get_user_in_session(request)
     user_id = user.id if user is not None else None

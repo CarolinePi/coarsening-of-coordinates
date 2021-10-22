@@ -9,4 +9,3 @@ class LocationModel(BaseModel):
     # TODO: Validate latitude and longitude by degrees
     latitude = Column(DECIMAL, nullable=False)
     longitude = Column(DECIMAL, nullable=False)
-

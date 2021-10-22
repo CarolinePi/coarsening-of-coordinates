@@ -1,0 +1,15 @@
+[flake8]
+
+max-complexity = 10
+max-line-length = 80
+max-linenumber = 2000
+show-source = True
+suppress_none_returning = True
+
+exclude =
+  .hg
+  .git
+  .idea
+  data
+  tests
+  venv

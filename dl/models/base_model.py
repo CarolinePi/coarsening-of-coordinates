@@ -18,7 +18,7 @@ class BaseModel(Base):    # type: ignore
     __abstract__ = True
 
     id = Column(Integer, primary_key=True, autoincrement=True)
-    
+
     def as_dict(self) -> Dict[str, Any]:
         return {c.name: getattr(self, c.name) for c in self.__table__.columns}
 
@@ -47,4 +47,4 @@ class BaseModel(Base):    # type: ignore
         try:
             return f'<{type(self).__name__} id = {self.id}>'
         except NameError:
-            raise ModelException(f'You need to inherit from Model')
+            raise ModelException('You need to inherit from Model')
