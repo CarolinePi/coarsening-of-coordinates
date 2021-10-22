@@ -33,6 +33,6 @@ class Circle:
             ).quantize(Decimal('0.00001'))
         return self._y
 
-    def __repr__(self):
+    def __repr__(self) -> str:
         return f'class <{self.__class__.__name__}> ' \
                f'n = {self.n}, x0 = {self.x0}, y0 = {self.y0}'

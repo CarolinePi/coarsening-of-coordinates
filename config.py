@@ -1,7 +1,7 @@
 import dataclasses
 from os import getenv
 from pathlib import Path
-from typing import List
+from typing import List, Dict, Any
 
 import trafaret as t
 
@@ -42,7 +42,7 @@ class AppConfig:
     secret_key: bytes
     n: float
 
-    def __init__(self, **kwargs):
+    def __init__(self, **kwargs: Dict[str, Any]):
         names = set([f.name for f in dataclasses.fields(self)])
         for k, v in kwargs.items():
             if k in names:

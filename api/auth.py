@@ -52,5 +52,5 @@ def verify_password(real_password: str, password: str) -> bool:
     password_hash = hashlib.pbkdf2_hmac(
         'sha512', password.encode('utf-8'), salt, 100000
     )
-    password_hash = password_hash.hex()
-    return password_hash == real_password[32:]
+    password_hash_str = password_hash.hex()
+    return password_hash_str == real_password[32:]

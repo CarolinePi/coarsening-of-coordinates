@@ -10,20 +10,20 @@ class ModelException(Exception):
     def __init__(self, message: str):
         self.message = message
 
-    def __str__(self):
+    def __str__(self) -> str:
         return f'Model error: {self.message}'
 
 
-class BaseModel(Base):
+class BaseModel(Base):    # type: ignore
     __abstract__ = True
 
     id = Column(Integer, primary_key=True, autoincrement=True)
     
-    def as_dict(self):
+    def as_dict(self) -> Dict[str, Any]:
         return {c.name: getattr(self, c.name) for c in self.__table__.columns}
 
     @classmethod
-    async def check_types(cls, data: Dict[str, Any]):
+    async def check_types(cls, data: Dict[str, Any]) -> None:
         for key, value in data.items():
             column = cls.__table__.columns.get(key)
 
@@ -43,8 +43,7 @@ class BaseModel(Base):
                     f'field {key} with value {value} is not right'
                 )
 
-
-def __repr__(self):
+    def __repr__(self) -> str:
         try:
             return f'<{type(self).__name__} id = {self.id}>'
         except NameError:

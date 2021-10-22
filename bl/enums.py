@@ -8,7 +8,7 @@ class Sign(Enum):
 
 
 class AutoNameEnum(Enum):
-    def _generate_next_value_(name: str, *args: List[Any]) -> str:
+    def _generate_next_value_(name: str, *args: List[Any]) -> str:    # type: ignore
         return name.lower()
 
 

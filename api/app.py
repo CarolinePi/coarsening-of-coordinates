@@ -1,4 +1,4 @@
-from typing import Callable, AsyncGenerator
+from typing import Callable, AsyncGenerator, Iterator
 from aiohttp import web
 from aiohttp.web_middlewares import normalize_path_middleware
 from aiohttp_session import session_middleware
@@ -12,14 +12,14 @@ from dl.repository import Repository
 def cleanup_database(
     config: DatabaseConfig
 ) -> Callable[[web.Application], AsyncGenerator]:
-    async def cleanup(app: web.Application):
+    async def cleanup(app: web.Application) -> AsyncGenerator:
         async with Repository(config) as repository:
             app['repository'] = repository
             yield
     return cleanup
 
 
-def get_app(config: Config):
+def get_app(config: Config) -> web.Application:
     app = web.Application(
         middlewares=[
             normalize_path_middleware(),
