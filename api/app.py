@@ -27,7 +27,6 @@ def get_app(config: Config) -> web.Application:
                 b'Thirty  two  length  bytes  key.')
             )
         ],
-
     )
     app.cleanup_ctx.append(cleanup_database(config.db))
     app['secret_table'] = config.app.secret_table

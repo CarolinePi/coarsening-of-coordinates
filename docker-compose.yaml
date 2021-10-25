@@ -15,19 +15,48 @@ services:
     restart: always
   backend:
     image: backend
-    build:
+    build: &build_backend
       context: .
       dockerfile: Dockerfile
-    volumes:
+    volumes: &volumes
       - .:/app
     environment:
-      CONFIG_PATH: config.yaml
+      CONFIG_PATH: config/config.yaml
     container_name: coordinate_backend
     command: python3.9 main.py
     ports:
       - "8080:8080"
     depends_on:
       - database
+  tests:
+    build: &build_test_backend
+      context: .
+      dockerfile: test.Dockerfile
+    volumes: *volumes
+    environment:
+      ROSETTA_CONFIG_PATH: config/pytest.yaml
+    container_name: coordinate_tests
+    command: pytest -svvx tests
+    depends_on:
+      - database
+    profiles: ["test"]
+  flake:
+    build: *build_test_backend
+    command: flake8 --config=.flake8 .
+    volumes: &volumes_read_only
+      - type: bind
+        source: .
+        target: /app
+        read_only: True
+    container_name: coordinate_flake8
+    profiles: ["lints"]
+  mypy:
+    build: *build_test_backend
+    command: mypy --ignore-missing-imports api bl dl main.py
+    volumes: *volumes_read_only
+    container_name: coordinate_mypy
+    profiles: ["lints"]
+
 
 volumes:
     database-data:

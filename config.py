@@ -1,4 +1,5 @@
 import dataclasses
+import os
 from os import getenv
 from pathlib import Path
 from typing import List, Dict, Any
@@ -83,8 +84,8 @@ def parse_config(file_path: str) -> Config:
 
 
 def get_config() -> Config:
-    # TODO: config_path = os.environ.get('CONFIG_PATH')
-    config_path = f'{Path(__file__).parent}/config.yaml'
+    config_path_from_env = os.environ.get('CONFIG_PATH')
+    config_path = f'{Path(__file__).parent}/{config_path_from_env}'
     return parse_config(config_path)
 
 

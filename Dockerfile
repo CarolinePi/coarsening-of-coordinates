@@ -7,12 +7,12 @@ ARG CONFIG_PATH
 ENV PYTHONPATH "${PYTHONPATH}:/app"
 ENV CONFIG_PATH ${CONFIG_PATH}
 
-COPY requirements.txt .
+COPY requirements/requirements.txt .
 COPY api api
 COPY bl bl
 COPY dl dl
 COPY config.py .
-COPY config.yaml .
+COPY config/config.yaml .
 COPY main.py .
 EXPOSE 8080
 
