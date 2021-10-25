@@ -52,7 +52,7 @@ services:
     profiles: ["lints"]
   mypy:
     build: *build_test_backend
-    command: mypy --ignore-missing-imports api bl dl main.py
+    command: mypy --ignore-missing-imports api bl dl main.py config.py
     volumes: *volumes_read_only
     container_name: coordinate_mypy
     profiles: ["lints"]
