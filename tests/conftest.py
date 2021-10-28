@@ -20,9 +20,6 @@ def db_config():
 async def repository(loop, db_config) -> Repository:
     return await Repository(db_config).__aenter__()
 
-from logging import getLogger
-log = getLogger(__name__)
-
 
 async def fill_db(connection):
 
