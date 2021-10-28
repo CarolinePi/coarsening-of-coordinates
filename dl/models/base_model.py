@@ -1,3 +1,4 @@
+from decimal import Decimal
 from typing import Dict, Any
 
 from sqlalchemy.ext.declarative import declarative_base
@@ -38,10 +39,12 @@ class BaseModel(Base):    # type: ignore
 
             field_type = cls.__table__.columns[key].type.python_type
             if not isinstance(value, field_type):
-                raise ModelException(
-                    f'Creation model error: Type {field_type} for a '
-                    f'field {key} with value {value} is not right'
-                )
+                if not (field_type == Decimal and isinstance(value, float)):
+                    raise ModelException(
+                        f'Creation model error: Type {field_type} for a '
+                        f'field {key} with value {value} and '
+                        f'type {type(value)} is not right'
+                    )
 
     def __repr__(self) -> str:
         try:

@@ -1,9 +1,8 @@
-from typing import Any, List, Dict, Type
-
 from aiopg.sa import create_engine
 from aiopg.sa.result import RowProxy
 from sqlalchemy import select, join
 from sqlalchemy.sql import Selectable
+from typing import Any, List, Dict, Type
 
 from config import DatabaseConfig
 from dl.models.base_model import BaseModel
@@ -25,6 +24,10 @@ class Repository:
     async def __aexit__(self, exc_type: Any, exc_val: Any, exc_tb: Any) -> None:
         self._engine.close()
         await self._engine.wait_closed()
+
+    async def _execute(self, query: Selectable) -> Any:
+        async with self._engine.acquire() as connection:
+            return await connection.execute(query)
 
     async def _fetchall(self, query: Selectable) -> List[RowProxy]:
         async with self._engine.acquire() as connection:
@@ -74,4 +77,11 @@ class Repository:
         return await self._first(
             select(UserModel.id, UserModel.password_hash)
             .where(UserModel.full_name == full_name).apply_labels()
+        )
+
+    async def delete_row_to_model_by_id(
+        self, model: Type[BaseModel], id: int
+    ) -> None:
+        return await self._execute(
+            model.__table__.delete().where(model.id == id)
         )

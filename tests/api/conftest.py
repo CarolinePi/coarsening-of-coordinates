@@ -19,7 +19,7 @@ async def client_without_login(aiohttp_client) -> TestClient:
 async def client_with_login(aiohttp_client) -> TestClient:
     async def authentication(application: web.Application):
         with mock.patch('api.auth.get_session') as session_mock:
-            session_mock.return_value = {"user_id": 1}
+            session_mock.return_value = {'user_id': 1}
             yield
 
     app = get_app(get_config())

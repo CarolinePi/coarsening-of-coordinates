@@ -1,3 +1,4 @@
+import logging
 from typing import Callable, AsyncGenerator
 from aiohttp import web
 from aiohttp.web_middlewares import normalize_path_middleware
@@ -28,6 +29,7 @@ def get_app(config: Config) -> web.Application:
             )
         ],
     )
+    logging.basicConfig(level=logging.DEBUG)
     app.cleanup_ctx.append(cleanup_database(config.db))
     app['secret_table'] = config.app.secret_table
     app.add_routes(routes)

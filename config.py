@@ -11,7 +11,6 @@ from trafaret_config import read_and_validate
 APP_TRAFARET = t.Dict({
     'host': t.String(),
     'port': t.Int(),
-    'domain': t.String(),
     'secret_key': t.String(),
     'secret_table': t.List(t.Int),
     'n': t.Float(),
@@ -38,7 +37,6 @@ CONFIG_TRAFARET = t.Dict({
 class AppConfig:
     host: str
     port: str
-    domain: str
     secret_table: List[int]
     secret_key: bytes
     n: float
