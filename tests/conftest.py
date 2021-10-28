@@ -30,7 +30,6 @@ async def fill_db(connection):
         '''INSERT INTO location (id, latitude, longitude) 
         VALUES (1, '123.23123', '87.323'), (2, '163.543', '13.3675')'''
     )
-    log.critical(111)
 
     await connection.execute(
         '''INSERT INTO "user" 
@@ -39,7 +38,6 @@ async def fill_db(connection):
         (2, 'Nik Pospelov', 'password2', False, 2)
         '''
     )
-    log.critical(await connection.execute('''select * from "user"'''))
 
 
 async def clean_db(connection):
@@ -51,13 +49,7 @@ async def clean_db(connection):
 async def test_db(db_config):
     engine = await create_engine(db_config.dsn)
     async with engine.acquire() as connection:
-        log.critical(11111111111111111)
-        log.critical(11111111111111111)
         await fill_db(connection)
-        log.critical(11111111111111111)
         yield
-        log.critical(222222222)
-        log.critical(222222222)
         await clean_db(connection)
-        log.critical(222222222)
 
