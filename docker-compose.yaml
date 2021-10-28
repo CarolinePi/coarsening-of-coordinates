@@ -11,6 +11,7 @@ services:
     volumes:
       - database-data:/var/lib/postgresql/data
       - ./migrations/v1.0.0.sql:/docker-entrypoint-initdb.d/init.sql
+    command: -p 5432
     ports:
       - "5432:5432"
     restart: always
@@ -36,8 +37,9 @@ services:
       POSTGRES_PASSWORD: testtest
       POSTGRES_DB: main
     container_name: coordinate_db_test
+    command: -p 5433
     ports:
-      - "5432:5432"
+      - "5433:5433"
     volumes:
      - ./migrations/v1.0.0.sql:/docker-entrypoint-initdb.d/init.sql
     restart: always

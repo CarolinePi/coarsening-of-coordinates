@@ -51,7 +51,6 @@ async def register(request: web.Request) -> web.Response:
     location_id = await request.app['repository'].insert_row_to_model(
         model=LocationModel, **data['location']
     )
-    # TODO: do transaction insert location and user
     user_id = await request.app['repository'].insert_row_to_model(
         model=UserModel,
         full_name=data['full_name'],

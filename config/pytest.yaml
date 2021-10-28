@@ -7,7 +7,7 @@ app:
 
 db:
   host: database-pytest
-  port: 5432
+  port: 5433
   db: main
   user: tester
   timeout: 10
