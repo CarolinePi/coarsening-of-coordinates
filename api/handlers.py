@@ -19,7 +19,15 @@ from bl.utils import get_user_location, DecimalSerializationDict
 routes = web.RouteTableDef()
 
 
-@routes.get('/healthcheck')
+@docs(
+    tags=["health"],
+    summary="Check if service is working",
+    responses={
+        200: {"description": "Ok. Server is alive"},
+        500: {"description": "Server error, gg wp"},
+    },
+)
+@routes.get('/healthcheck', allow_head=False)
 async def healthcheck(request: web.Request) -> web.Response:
     return web.HTTPOk(text='I am fine!')
 
