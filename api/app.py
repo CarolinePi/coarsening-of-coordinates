@@ -1,3 +1,4 @@
+from aiohttp_apispec.aiohttp_apispec import setup_aiohttp_apispec
 import logging
 from typing import Callable, AsyncGenerator
 from aiohttp import web
@@ -30,6 +31,12 @@ def get_app(config: Config) -> web.Application:
         ],
     )
     logging.basicConfig(level=logging.DEBUG)
+    setup_aiohttp_apispec(
+        app=app,
+        title="coordinate_project",
+        url="/api/docs/swagger.json",
+        swagger_path="/api/docs",
+    )
     app.cleanup_ctx.append(cleanup_database(config.db))
     app['secret_table'] = config.app.secret_table
     app.add_routes(routes)
