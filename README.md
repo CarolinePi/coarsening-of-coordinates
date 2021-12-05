@@ -11,7 +11,7 @@ If you want to launch locally, do next steps:
 2. Start tests: ```docker-compose up tests```
 It must set up db port 5433 with init sql migration for first launch
 
-
+## Linters
 ### Mypy
 ```docker-compose up mypy```
 
