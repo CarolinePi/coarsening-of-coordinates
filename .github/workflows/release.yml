@@ -24,7 +24,7 @@ jobs:
         context: ./
         file: ./Dockerfile
         push: true # Will only build if this is not here
-        tags: ghcr.io/OWNER/IMAGE_NAME:latest
+        tags: ghcr.io/${{ github.repository_owner }}/${{ github.repository }}:latest
 
     - name: Image digest
       run: echo ${{ steps.docker_build.outputs.digest }}
