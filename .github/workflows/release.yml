@@ -26,7 +26,6 @@ jobs:
         push: true # Will only build if this is not here
         tags: |
             coarsening/coordinates:latest
-            coarsening/coordinates:${{ steps.prep.outputs.tags }}
 
     - name: Image digest
       run: echo ${{ steps.docker_build.outputs.digest }}
