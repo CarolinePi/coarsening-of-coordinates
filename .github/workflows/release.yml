@@ -25,8 +25,8 @@ jobs:
         file: ./Dockerfile
         push: true # Will only build if this is not here
         tags: |
-            ghcr.io/coarsening_of_coordinates:latest
-            ghcr.io/coarsening_of_coordinates:${{ steps.prep.outputs.tags }}
+            coarsening/coordinates:latest
+            coarsening/coordinates:${{ steps.prep.outputs.tags }}
 
     - name: Image digest
       run: echo ${{ steps.docker_build.outputs.digest }}
