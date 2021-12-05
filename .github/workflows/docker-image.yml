@@ -1,0 +1,32 @@
+name: Python package
+
+on: [push]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out code
+      - uses: actions/checkout@v2
+      
+      - name: Start containers
+      - run: docker-compose up -d --build
+      
+      - name: Check running containers
+      - run: docker ps -a
+      
+      - name: Check logs
+      - run: docker logs backend
+      
+      - name: Run test
+      - run: docker-compose up tests
+       
+      - name: Run flake8
+      - run: docker-compose up flake     
+      
+      - name: Run mypy
+      - run: docker-compose up mypy
+      
+      - name: Stop containers
+      - if: always()
+      - run: docker-compose down
